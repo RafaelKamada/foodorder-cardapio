@@ -1,6 +1,7 @@
 // Infrastructure/Repositories/ImagemRepository.cs
 using Application.Repositories.Interfaces;
 using Domain.Entities;
+using Infrastructure.Configurations;
 using MongoDB.Driver;
 
 namespace Infrastructure.Repositories;
@@ -9,9 +10,9 @@ public class ImagemRepository : IImagemRepository
 {
     private readonly IMongoCollection<Imagem> _imagens;
 
-    public ImagemRepository(IMongoDatabase database)
+    public ImagemRepository(MongoDbContext context)
     {
-        _imagens = database.GetCollection<Imagem>("imagens");
+        _imagens = context.GetCollection<Imagem>("imagens");
     }
 
     public async Task<Imagem> ObterPorIdAsync(string id)

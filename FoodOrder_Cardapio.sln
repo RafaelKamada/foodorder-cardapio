@@ -3,23 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{54CC20E2-EF1E-40EC-9CBD-6FEAD27636FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{54CC20E2-EF1E-40EC-9CBD-6FEAD27636FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{6F07DC2E-96FA-40D3-B18F-67C512241597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{6F07DC2E-96FA-40D3-B18F-67C512241597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{9CD52A9B-E02F-4101-9613-423C734AC7D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{9CD52A9B-E02F-4101-9613-423C734AC7D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{1838A6C2-C60E-463A-A683-8770E5AB59F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{1838A6C2-C60E-463A-A683-8770E5AB59F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{25A635E2-B6BD-4AA7-B514-468E736FCF23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{25A635E2-B6BD-4AA7-B514-468E736FCF23}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0F2B471F-7CBC-4974-926E-355C0DF4C24D}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+		init-mongo.sh = init-mongo.sh
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{54CC20E2-EF1E-40EC-9CBD-6FEAD27636FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -42,5 +45,11 @@ Global
 		{25A635E2-B6BD-4AA7-B514-468E736FCF23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25A635E2-B6BD-4AA7-B514-468E736FCF23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25A635E2-B6BD-4AA7-B514-468E736FCF23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E3394F8-687F-4C2F-B0FE-4669AA6DD599}
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,7 @@
 // Infrastructure/Repositories/CategoriaRepository.cs
 using Application.Repositories.Interfaces;
 using Domain.Entities;
+using Infrastructure.Configurations;
 using MongoDB.Driver;
 
 namespace Infrastructure.Repositories;
@@ -9,9 +10,9 @@ public class CategoriaRepository : ICategoriaRepository
 {
     private readonly IMongoCollection<Categoria> _categorias;
 
-    public CategoriaRepository(IMongoDatabase database)
+    public CategoriaRepository(MongoDbContext context)
     {
-        _categorias = database.GetCollection<Categoria>("categorias");
+        _categorias = context.GetCollection<Categoria>("categorias");
     }
 
     public async Task<Categoria> ObterPorIdAsync(string id)

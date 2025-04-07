@@ -2,6 +2,7 @@ using Domain.Enums;
 using Application.Repositories.Interfaces;
 using Domain.Entities;
 using MongoDB.Driver;
+using Infrastructure.Configurations;
 
 namespace Infrastructure.Repositories;
 
@@ -9,9 +10,9 @@ public class ProdutoRepository : IProdutoRepository
 {
     private readonly IMongoCollection<Produto> _produtos;
 
-    public ProdutoRepository(IMongoDatabase database)
+    public ProdutoRepository(MongoDbContext context)
     {
-        _produtos = database.GetCollection<Produto>("produtos");
+        _produtos = context.GetCollection<Produto>("produtos");
     }
 
     public async Task<Produto> ObterPorIdAsync(string id)
