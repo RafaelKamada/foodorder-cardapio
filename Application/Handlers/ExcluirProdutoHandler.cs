@@ -1,4 +1,3 @@
-// Application/Handlers/ExcluirProdutoHandler.cs
 using Application.Commands;
 using Application.Repositories.Interfaces;
 using MediatR;

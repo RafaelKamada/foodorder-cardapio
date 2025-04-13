@@ -22,7 +22,7 @@ public class ObterProdutoHandler : IRequestHandler<ObterProdutoQuery, ProdutoDto
 
         return new ProdutoDto
         {
-            Id = produto.Id,
+            Id = produto.IdSequencial,
             Nome = produto.Nome,
             Tipo = produto.Tipo,
             Preco = produto.Preco,

@@ -1,4 +1,3 @@
-// Infrastructure/Repositories/CategoriaRepository.cs
 using Application.Repositories.Interfaces;
 using Domain.Entities;
 using Infrastructure.Configurations;

@@ -30,7 +30,7 @@ builder.Services.AddMediatR(cfg =>
 
 // Configuração dos repositórios
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
-builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+//builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IImagemRepository, ImagemRepository>();
 
 

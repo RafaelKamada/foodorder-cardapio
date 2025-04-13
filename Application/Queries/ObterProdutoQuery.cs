@@ -5,9 +5,9 @@ namespace Application.Queries;
 
 public class ObterProdutoQuery : IRequest<ProdutoDto>
 {
-    public string Id { get; set; }
+    public int Id { get; set; }
 
-    public ObterProdutoQuery(string id)
+    public ObterProdutoQuery(int id)
     {
         Id = id;
     }

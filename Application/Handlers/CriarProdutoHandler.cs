@@ -4,18 +4,19 @@ using Domain.Entities;
 using MediatR;
 using Application.DTOs;
 using MongoDB.Bson;
+using Domain.Exceptions;
 
 namespace Application.Handlers;
 
 public class CriarProdutoHandler : IRequestHandler<CriarProdutoCommand, ProdutoDto>
 {
     private readonly IProdutoRepository _produtoRepository;
-    private readonly ICategoriaRepository _categoriaRepository;
+    //private readonly ICategoriaRepository _categoriaRepository;
 
-    public CriarProdutoHandler(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository)
+    public CriarProdutoHandler(IProdutoRepository produtoRepository/*, ICategoriaRepository categoriaRepository*/)
     {
         _produtoRepository = produtoRepository;
-        _categoriaRepository = categoriaRepository;
+        //_categoriaRepository = categoriaRepository;
     }
 
     public async Task<ProdutoDto> Handle(CriarProdutoCommand request, CancellationToken cancellationToken)
@@ -32,7 +33,8 @@ public class CriarProdutoHandler : IRequestHandler<CriarProdutoCommand, ProdutoD
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Data = DateTime.UtcNow,
-                ProdutoId = ObjectId.GenerateNewId().ToString() // Gerar um ID temporário
+                ProdutoId = ObjectId.GenerateNewId().ToString(),
+                Base64Data = i.ToString()
             }).ToList()
         };
 
@@ -44,11 +46,16 @@ public class CriarProdutoHandler : IRequestHandler<CriarProdutoCommand, ProdutoD
             imagem.ProdutoId = produtoCriado.Id;
         }
 
-        await _produtoRepository.AtualizarAsync(produtoCriado);
+        var result = await _produtoRepository.AtualizarAsync(produtoCriado);
+
+        if (result == null)
+        {
+            throw new ExcecaoNaoEncontrado($"Produto com ID {produto.IdSequencial} não encontrado!");
+        }
 
         return new ProdutoDto
         {
-            Id = produtoCriado.Id,
+            Id = produtoCriado.IdSequencial,
             Nome = produtoCriado.Nome,
             Tipo = produtoCriado.Tipo,
             Preco = produtoCriado.Preco,
@@ -58,7 +65,7 @@ public class CriarProdutoHandler : IRequestHandler<CriarProdutoCommand, ProdutoD
             {
                 Id = i.Id,
                 Data = i.Data,
-                ProdutoId = i.ProdutoId
+                ProdutoId = i.ProdutoId                
             }).ToList()
         };
     }

@@ -1,32 +1,32 @@
-// Application/Handlers/AtualizarProdutoHandler.cs
 using Application.Commands;
 using Application.Repositories.Interfaces;
 using Domain.Entities;
 using MediatR;
 using Application.DTOs;
 using MongoDB.Bson;
+using Domain.Exceptions;
 
 namespace Application.Handlers;
 
 public class AtualizarProdutoHandler : IRequestHandler<AtualizarProdutoCommand, ProdutoDto>
 {
     private readonly IProdutoRepository _produtoRepository;
-    private readonly ICategoriaRepository _categoriaRepository;
+    //private readonly ICategoriaRepository _categoriaRepository;
 
-    public AtualizarProdutoHandler(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository)
+    public AtualizarProdutoHandler(IProdutoRepository produtoRepository/*, ICategoriaRepository categoriaRepository*/)
     {
         _produtoRepository = produtoRepository;
-        _categoriaRepository = categoriaRepository;
+        //_categoriaRepository = categoriaRepository;
     }
 
     public async Task<ProdutoDto> Handle(AtualizarProdutoCommand request, CancellationToken cancellationToken)
     {
-        var produto = await _produtoRepository.ObterPorIdAsync(request.Id);
+        var produto = await _produtoRepository.ObterPorIdAsync(request.IdSequencial);
         if (produto == null)
-            throw new Exception("Produto não encontrado");
+            throw new ExcecaoNaoEncontrado("Produto não encontrado");
 
         if (request.Nome != null) produto.Nome = request.Nome;
-        if (request.Tipo != null) produto.Tipo = request.Tipo.Value;
+        if (request.Tipo != null) produto.Tipo = request.Tipo;
         if (request.Preco != null) produto.Preco = request.Preco.Value;
         if (request.Descricao != null) produto.Descricao = request.Descricao;
         if (request.TempoPreparo != null) produto.TempoPreparo = request.TempoPreparo.Value;
@@ -34,13 +34,14 @@ public class AtualizarProdutoHandler : IRequestHandler<AtualizarProdutoCommand, 
         {
             Id = ObjectId.GenerateNewId().ToString(),
             Data = DateTime.UtcNow,
-            ProdutoId = produto.Id
+            ProdutoId = produto.Id,
+            Base64Data = i
         }).ToList();
 
         var produtoAtualizado = await _produtoRepository.AtualizarAsync(produto);
         return new ProdutoDto
         {
-            Id = produtoAtualizado.Id,
+            Id = produtoAtualizado.IdSequencial,
             Nome = produtoAtualizado.Nome,
             Tipo = produtoAtualizado.Tipo,
             Preco = produtoAtualizado.Preco,

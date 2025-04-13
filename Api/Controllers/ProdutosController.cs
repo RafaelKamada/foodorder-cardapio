@@ -8,7 +8,7 @@ using Domain.Enums;
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("Produtos")]
     public class ProdutosController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -27,7 +27,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProdutoDto>> ObterPorId(string id)
+        public async Task<ActionResult<ProdutoDto>> ObterPorId(int id)
         {
             var produto = await _mediator.Send(new ObterProdutoQuery(id));
             if (produto == null)
@@ -43,6 +43,17 @@ namespace Api.Controllers
             return Ok(Enum.GetNames(typeof(CategoriaTipo)));
         }
 
+        [HttpGet("ObterPorCategoria/{categoria}")]
+        public async Task<ActionResult<IEnumerable<ProdutoDto>>> ObterPorCategoria(string categoria)
+        {
+            var produtos = await _mediator.Send(new ObterProdutoPorCategoriaQuery(categoria));
+            if (produtos == null)
+            {
+                return NotFound();
+            }
+            return Ok(produtos);
+        }
+
         [HttpPost]
         public async Task<ActionResult<ProdutoDto>> Criar([FromBody] CriarProdutoCommand command)
         {
@@ -51,9 +62,9 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProdutoDto>> Atualizar(string id, [FromBody] AtualizarProdutoCommand command)
+        public async Task<ActionResult<ProdutoDto>> Atualizar(int id, [FromBody] AtualizarProdutoCommand command)
         {
-            if (id != command.Id)
+            if (id != command.IdSequencial)
             {
                 return BadRequest();
             }
@@ -63,7 +74,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Excluir(string id)
+        public async Task<IActionResult> Excluir(int id)
         {
             await _mediator.Send(new ExcluirProdutoCommand { Id = id });
             return NoContent();

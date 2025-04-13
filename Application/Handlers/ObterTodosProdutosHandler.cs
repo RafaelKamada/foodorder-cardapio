@@ -19,7 +19,7 @@ namespace Application.Handlers
             var produtos = await _produtoRepository.ObterTodosAsync();
             return produtos.Select(p => new ProdutoDto
             {
-                Id = p.Id,
+                Id = p.IdSequencial,
                 Nome = p.Nome,
                 Tipo = p.Tipo,
                 Preco = p.Preco,
