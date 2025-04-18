@@ -9,7 +9,13 @@ using MongoDB.Driver;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuração do MongoDB
-builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+builder.Configuration.AddEnvironmentVariables();
+builder.Services.Configure<MongoDbSettings>(options =>
+{
+    options.ConnectionString = Environment.GetEnvironmentVariable("MONGODB_CONNECTION") ??
+        builder.Configuration["MongoDbSettings:ConnectionString"];
+    options.DatabaseName = builder.Configuration["MongoDbSettings:DatabaseName"] ?? "FoodOrder_Cardapio";
+});
 
 // Configuração do MongoDB Context
 builder.Services.AddScoped<MongoDbContext>(provider =>
@@ -43,6 +49,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.Use(async (context, next) =>
+{
+    await Task.Delay(2000); // Espera 2 segundos
+    await next();
+});
 //app.MapHealthChecks("/health");
 
 // Configuração do Swagger

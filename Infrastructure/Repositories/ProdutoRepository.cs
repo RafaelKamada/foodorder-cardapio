@@ -22,6 +22,11 @@ public class ProdutoRepository : IProdutoRepository
         return await _produtos.Find(p => p.IdSequencial == id).FirstOrDefaultAsync();
     }
 
+    public async Task<List<Produto>> ObterPorIdsAsync(List<int> ids)
+    {
+        return await _produtos.Find(p => ids.Contains(p.IdSequencial)).ToListAsync();
+    }
+
     public async Task<List<Produto>> ObterTodosAsync()
     {
         return await _produtos.Find(_ => true).ToListAsync();

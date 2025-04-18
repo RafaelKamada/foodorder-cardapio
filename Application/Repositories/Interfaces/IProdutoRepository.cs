@@ -6,6 +6,7 @@ namespace Application.Repositories.Interfaces;
 public interface IProdutoRepository
 {
     Task<Produto> ObterPorIdAsync(int id);
+    Task<List<Produto>> ObterPorIdsAsync(List<int> ids);
     Task<List<Produto>> ObterTodosAsync();
     Task<List<Produto>> ObterPorCategoriaAsync(CategoriaTipo categoria);
     Task<Produto> CriarAsync(Produto produto);

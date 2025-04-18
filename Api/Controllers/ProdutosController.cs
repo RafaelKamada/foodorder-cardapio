@@ -37,6 +37,19 @@ namespace Api.Controllers
             return Ok(produto);
         }
 
+
+        [HttpGet("ObterPorIds")]
+        public async Task<ActionResult<ProdutoDto>> ObterProdutosPorIds([FromBody] List<int> ids)
+        {
+            var produtos = await _mediator.Send(new ObterProdutosPorIdQuery(ids));
+            if (produtos == null)
+            {
+                return NotFound();
+            }
+            return Ok(produtos);
+        }
+
+
         [HttpGet("ObterCategorias")]
         public ActionResult<IEnumerable<string>> ObterCategorias()
         {
