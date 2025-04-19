@@ -23,8 +23,7 @@ services:
       context: .
       dockerfile: Api/Dockerfile
     ports:
-      - "80"
-      - "443"
+      - "8080:80"
     environment:
       - MONGODB_CONNECTION=mongodb://mongodb:27017/FoodOrder_Cardapio
       - ASPNETCORE_ENVIRONMENT=Development
