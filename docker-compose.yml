@@ -18,10 +18,14 @@ services:
       start_period: 30s
 
   api:
-    image: ${DOCKER_REGISTRY-}api
-    build:
-      context: .
-      dockerfile: Api/Dockerfile
+    # usar FORA do debug
+    image: japamanoel/foodorder_cardapio:latest
+    #inicio---//---- usar no modo debug
+    # image: ${DOCKER_REGISTRY-}api
+    # build:
+    #   context: .
+    #   dockerfile: Api/Dockerfile
+    #fim---//---- usar no modo debug
     ports:
       - "8080:80"
     environment:
