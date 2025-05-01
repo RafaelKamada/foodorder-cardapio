@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Tests.Features
+namespace Tests.BDD.Features
 {
     using Reqnroll;
     using System;
@@ -19,22 +19,22 @@ namespace Tests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class CadastrarProdutoFeature : object, Xunit.IClassFixture<CadastrarProdutoFeature.FixtureData>, Xunit.IAsyncLifetime
+    public partial class ExclusaoDeProdutoFeature : object, Xunit.IClassFixture<ExclusaoDeProdutoFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("pt-br"), "Features", "Cadastrar Produto", "\tComo um usuario do sistema\r\n\tQuero cadastrar um novo produto\r\n\tPara poder adicio" +
-                "na-lo ao cardapio", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("pt-br"), "BDD/Features", "Exclusão de Produto", "  Como um usuário do sistema\r\n  Quero poder remover um produto do cardápio\r\n  Par" +
+                "a manter o catálogo atualizado", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "CadastroProduto.feature"
+#line 1 "ExclusaoProduto.feature"
 #line hidden
         
-        public CadastrarProdutoFeature(CadastrarProdutoFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ExclusaoDeProdutoFeature(ExclusaoDeProdutoFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -93,16 +93,16 @@ namespace Tests.Features
             await this.TestTearDownAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Adicionar produto com sucesso")]
-        [Xunit.TraitAttribute("FeatureTitle", "Cadastrar Produto")]
-        [Xunit.TraitAttribute("Description", "Adicionar produto com sucesso")]
-        public async System.Threading.Tasks.Task AdicionarProdutoComSucesso()
+        [Xunit.SkippableFactAttribute(DisplayName="Excluir produto existente")]
+        [Xunit.TraitAttribute("FeatureTitle", "Exclusão de Produto")]
+        [Xunit.TraitAttribute("Description", "Excluir produto existente")]
+        public async System.Threading.Tasks.Task ExcluirProdutoExistente()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Adicionar produto com sucesso", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Excluir produto existente", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 7
- this.ScenarioInitialize(scenarioInfo);
+  this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -112,13 +112,44 @@ namespace Tests.Features
             {
                 await this.ScenarioStartAsync();
 #line 8
-  await testRunner.GivenAsync("o sistema esta pronto para cadastro", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+    await testRunner.GivenAsync("um produto já cadastrado no sistema", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 9
-  await testRunner.WhenAsync("eu envio os dados de um novo produto", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+    await testRunner.WhenAsync("solicito a exclusão do produto", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 10
-  await testRunner.ThenAsync("o produto e salvo no banco de dados", ((string)(null)), ((global::Reqnroll.Table)(null)), "Entao ");
+    await testRunner.ThenAsync("o produto deve ser removido do sistema", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Excluir produto inexistente")]
+        [Xunit.TraitAttribute("FeatureTitle", "Exclusão de Produto")]
+        [Xunit.TraitAttribute("Description", "Excluir produto inexistente")]
+        public async System.Threading.Tasks.Task ExcluirProdutoInexistente()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Excluir produto inexistente", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 12
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 13
+    await testRunner.GivenAsync("o sistema está pronto para exclusão", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+#line hidden
+#line 14
+    await testRunner.WhenAsync("tento excluir um produto inexistente", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line hidden
+#line 15
+    await testRunner.ThenAsync("o sistema deve retornar erro de não encontrado", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -131,12 +162,12 @@ namespace Tests.Features
             
             async System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await CadastrarProdutoFeature.FeatureSetupAsync();
+                await ExclusaoDeProdutoFeature.FeatureSetupAsync();
             }
             
             async System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await CadastrarProdutoFeature.FeatureTearDownAsync();
+                await ExclusaoDeProdutoFeature.FeatureTearDownAsync();
             }
         }
     }

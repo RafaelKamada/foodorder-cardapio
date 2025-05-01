@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace Tests
+namespace Tests.BDD
 {
     public class TestesBDD
     {
