@@ -11,7 +11,7 @@ public class ProdutoRepository : IProdutoRepository
     private readonly IMongoCollection<Produto> _produtos;
     private readonly IMongoCollection<Sequence> _sequences;
 
-    public ProdutoRepository(MongoDbContext context)
+    public ProdutoRepository(IMongoDbContext context)
     {
         _produtos = context.GetCollection<Produto>("produtos");
         _sequences = context.GetCollection<Sequence>("sequences");
@@ -19,7 +19,11 @@ public class ProdutoRepository : IProdutoRepository
 
     public async Task<Produto> ObterPorIdAsync(int id)
     {
-        return await _produtos.Find(p => p.IdSequencial == id).FirstOrDefaultAsync();
+        //return await _produtos.Find(p => p.IdSequencial == id).FirstOrDefaultAsync();
+
+        var cursor = await _produtos.FindAsync(p => p.IdSequencial == id).ConfigureAwait(false);
+        var resultados = await cursor.ToListAsync();
+        return resultados.FirstOrDefault();
     }
 
     public async Task<List<Produto>> ObterPorIdsAsync(List<int> ids)
@@ -40,7 +44,7 @@ public class ProdutoRepository : IProdutoRepository
     public async Task<Produto> CriarAsync(Produto produto)
     {
         // Busca e atualiza a sequência de forma atômica
-        var sequence = await _sequences.FindOneAndUpdateAsync(
+        var sequence = await _sequences.FindOneAndUpdateAsync<Sequence>(
             s => s._id == "Produto",
             Builders<Sequence>.Update.Inc(x => x.Value, 1),
             new FindOneAndUpdateOptions<Sequence> { ReturnDocument = ReturnDocument.After }
@@ -76,10 +80,10 @@ public class ProdutoRepository : IProdutoRepository
             .Set(p => p.TempoPreparo, produto.TempoPreparo)
             .Set(p => p.Imagens, produto.Imagens);
 
-        var result = await _produtos.UpdateOneAsync(
+        var result = await _produtos.ReplaceOneAsync(
             p => p.IdSequencial == produto.IdSequencial,
-            updateDefinition,
-            new UpdateOptions { IsUpsert = false }
+            produto,
+            new ReplaceOptions { IsUpsert = false }
         );
 
         if (result.ModifiedCount == 0)

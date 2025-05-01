@@ -9,7 +9,7 @@ public class ImagemRepository : IImagemRepository
 {
     private readonly IMongoCollection<Imagem> _imagens;
 
-    public ImagemRepository(MongoDbContext context)
+    public ImagemRepository(IMongoDbContext context)
     {
         _imagens = context.GetCollection<Imagem>("imagens");
     }

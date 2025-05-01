@@ -1,5 +1,6 @@
 using Application.Commands;
 using Application.Repositories.Interfaces;
+using Domain.Exceptions;
 using MediatR;
 
 namespace Application.Handlers;
@@ -15,6 +16,12 @@ public class ExcluirProdutoHandler : IRequestHandler<ExcluirProdutoCommand>
 
     public async Task Handle(ExcluirProdutoCommand request, CancellationToken cancellationToken)
     {
+        var produto = await _produtoRepository.ObterPorIdAsync(request.Id);
+        if (produto == null)
+        {
+            throw new ExcecaoNaoEncontrado("Produto não encontrado");
+        }
+
         await _produtoRepository.ExcluirAsync(request.Id);
     }
 }

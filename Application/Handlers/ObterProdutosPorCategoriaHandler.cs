@@ -7,7 +7,7 @@ using Domain.Exceptions;
 
 namespace Application.Handlers
 {
-    public class ObterProdutosPorCategoriaHandler : IRequestHandler<ObterProdutoPorCategoriaQuery, IEnumerable<ProdutoDto>>
+    public class ObterProdutosPorCategoriaHandler : IRequestHandler<ObterProdutosPorCategoriaQuery, List<ProdutoDto>>
     {
         private readonly IProdutoRepository _produtoRepository;
 
@@ -16,7 +16,7 @@ namespace Application.Handlers
             _produtoRepository = produtoRepository;
         }
 
-        public async Task<IEnumerable<ProdutoDto>> Handle(ObterProdutoPorCategoriaQuery request, CancellationToken cancellationToken)
+        public async Task<List<ProdutoDto>> Handle(ObterProdutosPorCategoriaQuery request, CancellationToken cancellationToken)
         {
 
             if (!Enum.TryParse<CategoriaTipo>(request.Categoria, true, out CategoriaTipo categoria))
@@ -41,7 +41,7 @@ namespace Application.Handlers
                     Data = i.Data,
                     ProdutoId = i.ProdutoId
                 }).ToList()
-            });            
+            }).ToList();            
         }
     }
 }

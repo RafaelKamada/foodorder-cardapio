@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Handlers
 {
-    public class ObterTodosProdutosHandler : IRequestHandler<ObterTodosProdutosQuery, IEnumerable<ProdutoDto>>
+    public class ObterTodosProdutosHandler : IRequestHandler<ObterTodosProdutosQuery, List<ProdutoDto>>
     {
         private readonly IProdutoRepository _produtoRepository;
 
@@ -14,7 +14,7 @@ namespace Application.Handlers
             _produtoRepository = produtoRepository;
         }
 
-        public async Task<IEnumerable<ProdutoDto>> Handle(ObterTodosProdutosQuery request, CancellationToken cancellationToken)
+        public async Task<List<ProdutoDto>> Handle(ObterTodosProdutosQuery request, CancellationToken cancellationToken)
         {
             var produtos = await _produtoRepository.ObterTodosAsync();
             return produtos.Select(p => new ProdutoDto
@@ -31,7 +31,8 @@ namespace Application.Handlers
                     Data = i.Data,
                     ProdutoId = i.ProdutoId
                 }).ToList()
-            });
+            }).ToList();
+
         }
     }
 }

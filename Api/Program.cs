@@ -18,7 +18,7 @@ builder.Services.Configure<MongoDbSettings>(options =>
 });
 
 // Configuração do MongoDB Context
-builder.Services.AddScoped<MongoDbContext>(provider =>
+builder.Services.AddScoped<IMongoDbContext, MongoDbContext>(provider =>
 {
     var settings = provider.GetRequiredService<IOptions<MongoDbSettings>>().Value;
     var client = new MongoClient(settings.ConnectionString);

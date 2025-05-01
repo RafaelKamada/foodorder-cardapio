@@ -1,9 +1,8 @@
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 
 namespace Infrastructure.Configurations;
 
-public class MongoDbContext
+public class MongoDbContext: IMongoDbContext
 {
     private readonly IMongoDatabase _database;
 

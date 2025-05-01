@@ -20,7 +20,7 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("ObterTodos")]
-        public async Task<ActionResult<IEnumerable<ProdutoDto>>> ObterTodos()
+        public async Task<ActionResult<List<ProdutoDto>>> ObterTodos()
         {
             var produtos = await _mediator.Send(new ObterTodosProdutosQuery());
             return Ok(produtos);
@@ -57,9 +57,9 @@ namespace Api.Controllers
         }
 
         [HttpGet("ObterPorCategoria/{categoria}")]
-        public async Task<ActionResult<IEnumerable<ProdutoDto>>> ObterPorCategoria(string categoria)
+        public async Task<ActionResult<List<ProdutoDto>>> ObterPorCategoria(string categoria)
         {
-            var produtos = await _mediator.Send(new ObterProdutoPorCategoriaQuery(categoria));
+            var produtos = await _mediator.Send(new ObterProdutosPorCategoriaQuery(categoria));
             if (produtos == null)
             {
                 return NotFound();

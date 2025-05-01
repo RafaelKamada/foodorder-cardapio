@@ -3,7 +3,7 @@ using Application.DTOs;
 
 namespace Application.Queries;
 
-public class ObterProdutoPorCategoriaQuery : IRequest<IEnumerable<ProdutoDto>>
+public class ObterProdutosPorCategoriaQuery : IRequest<List<ProdutoDto>>
 {
     /// <summary>
     /// Categoria do produto
@@ -14,7 +14,7 @@ public class ObterProdutoPorCategoriaQuery : IRequest<IEnumerable<ProdutoDto>>
     /// </remarks>
     public string Categoria { get; set; }
 
-    public ObterProdutoPorCategoriaQuery(string categoria)
+    public ObterProdutosPorCategoriaQuery(string categoria)
     {
         Categoria = categoria;
     }

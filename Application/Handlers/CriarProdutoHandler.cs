@@ -21,22 +21,38 @@ public class CriarProdutoHandler : IRequestHandler<CriarProdutoCommand, ProdutoD
 
     public async Task<ProdutoDto> Handle(CriarProdutoCommand request, CancellationToken cancellationToken)
     {
-        var produto = new Produto
-        {
-            Id = ObjectId.GenerateNewId().ToString(),
-            Nome = request.Nome,
-            Tipo = request.Tipo,
-            Preco = request.Preco,
-            Descricao = request.Descricao,
-            TempoPreparo = request.TempoPreparo,
-            Imagens = request.Imagens.Select(i => new Imagem
+        //var produto = new Produto
+        //{
+        //    Id = ObjectId.GenerateNewId().ToString(),
+        //    Nome = request.Nome,
+        //    Tipo = request.Tipo,
+        //    Preco = request.Preco,
+        //    Descricao = request.Descricao,
+        //    TempoPreparo = request.TempoPreparo,
+        //    Imagens = request.Imagens.Select(i => new Imagem
+        //    {
+        //        Id = ObjectId.GenerateNewId().ToString(),
+        //        Data = DateTime.UtcNow,
+        //        ProdutoId = ObjectId.GenerateNewId().ToString(),
+        //        Base64Data = i.ToString()
+        //    }).ToList()
+        //};
+
+        var produto = new Produto(
+            ObjectId.GenerateNewId().ToString(),
+            request.Nome,
+            request.Tipo,
+            request.Preco,
+            request.Descricao,
+            request.TempoPreparo,
+            request.Imagens.Select(i => new Imagem
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Data = DateTime.UtcNow,
                 ProdutoId = ObjectId.GenerateNewId().ToString(),
                 Base64Data = i.ToString()
             }).ToList()
-        };
+        );
 
         var produtoCriado = await _produtoRepository.CriarAsync(produto);
         

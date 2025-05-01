@@ -9,7 +9,7 @@ public class CategoriaRepository : ICategoriaRepository
 {
     private readonly IMongoCollection<Categoria> _categorias;
 
-    public CategoriaRepository(MongoDbContext context)
+    public CategoriaRepository(IMongoDbContext context)
     {
         _categorias = context.GetCollection<Categoria>("categorias");
     }
