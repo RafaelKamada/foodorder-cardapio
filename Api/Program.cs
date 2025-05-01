@@ -5,6 +5,7 @@ using Infrastructure.Configurations;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 app.Use(async (context, next) =>
@@ -54,14 +57,18 @@ app.Use(async (context, next) =>
     await Task.Delay(2000); // Espera 2 segundos
     await next();
 });
-//app.MapHealthChecks("/health");
+
+app.MapHealthChecks("/health");
 
 // Configuração do Swagger
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
