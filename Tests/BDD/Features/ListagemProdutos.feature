@@ -13,3 +13,8 @@ Funcionalidade: Listagem de Produtos
     Dado existem produtos cadastrados no sistema
     Quando solicito a listagem de produtos por categoria
     Então o sistema deve retornar apenas os produtos daquela categoria
+
+  Cenário: Listar produtos por Ids
+    Dado existem produtos cadastrados no sistema
+    Quando solicito a listagem de produtos por Ids
+    Então o sistema deve retornar apenas os produtos daqueles Ids

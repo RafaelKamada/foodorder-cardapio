@@ -68,6 +68,14 @@ namespace Tests.BDD.Steps
             _produtos = await _mediator.Send(new ObterProdutosPorCategoriaQuery("Lanche"));
         }
 
+        [When(@"solicito a listagem de produtos por Ids")]
+        public async Task QuandoListarPorIds()
+        {
+            List<int> ids = new List<int> { 1, 2 };
+
+            _produtos = await _mediator.Send(new ObterProdutosPorIdQuery(ids));
+        }
+
         [Then(@"o sistema deve retornar a lista completa de produtos")]
         public void EntaoListaCompleta()
         {
@@ -78,6 +86,13 @@ namespace Tests.BDD.Steps
 
         [Then(@"o sistema deve retornar apenas os produtos daquela categoria")]
         public void EntaoProdutosPorCategoria()
+        {
+            Assert.NotNull(_produtos);
+            Assert.All(_produtos, p => Assert.Equal("Lanche", p.Tipo));
+        }
+
+        [Then(@"o sistema deve retornar apenas os produtos daqueles Ids")]
+        public void EntaoProdutosPorIds()
         {
             Assert.NotNull(_produtos);
             Assert.All(_produtos, p => Assert.Equal("Lanche", p.Tipo));
