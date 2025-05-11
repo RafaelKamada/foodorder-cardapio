@@ -32,13 +32,17 @@ jobs:
 
       - name: Build
         run: dotnet build FoodOrder_Cardapio.sln --no-restore
-
+        
       - name: Run tests and collect coverage
         run: |
           dotnet test FoodOrder_Cardapio.sln \
             --no-build \
             --collect:"XPlat Code Coverage" \
-            --results-directory ./Tests/Coverage/XML
+            --results-directory ./Tests/Coverage/XML \
+            -p:CollectCoverage=true \
+            -p:CoverletOutputFormat=cobertura \
+            -p:CoverletOutput=./Tests/Coverage/XML/coverage.cobertura.xml
+
 
       # Verificar se os arquivos de cobertura estão sendo gerados corretamente
       - name: List coverage files
