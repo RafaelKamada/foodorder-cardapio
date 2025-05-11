@@ -13,13 +13,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup .NET
+      - name: Setup .NET 8.0
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
 
+      - name: Install .NET 6.0 (for Coveralls)
+        run: |
+          wget https://download.visualstudio.microsoft.com/download/pr/5d04d580-beb0-48cc-bda7-e8b02133b038/76a4a83b83130e3b6b72d48b3d1ac8fc/dotnet-sdk-6.0.414-linux-x64.tar.gz
+          mkdir -p $HOME/dotnet && tar zxf dotnet-sdk-6.0.414-linux-x64.tar.gz -C $HOME/dotnet
+          export PATH=$PATH:$HOME/dotnet
+          dotnet --version
+
       - name: Install dependencies
         run: dotnet restore FoodOrder_Cardapio.sln
+
 
       - name: Build
         run: dotnet build FoodOrder_Cardapio.sln --no-restore
