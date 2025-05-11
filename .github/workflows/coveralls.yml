@@ -39,10 +39,13 @@ jobs:
             -targetdir:"./Tests/Coverage/Report" \
             -reporttypes:Html
 
-      - name: Convert coverage to Coveralls format
+      - name: Install and run Coveralls
         run: |
           dotnet tool install --global coveralls.net
-          coveralls.net --opencover -i ./Tests/Coverage/XML/coverage.cobertura.xml -r ${{ secrets.COVERALLS_REPO_TOKEN }}
+          # Add the global tool path to the system PATH
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+          # Now you can call the coveralls.net tool
+          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/coverage.cobertura.xml -r ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Upload coverage report
         run: echo "Coverage uploaded to Coveralls"
