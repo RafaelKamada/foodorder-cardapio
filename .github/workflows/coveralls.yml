@@ -3,7 +3,7 @@ name: Test and Report Coverage
 on:
   push:
     branches:
-      - main
+      - fase_4
   pull_request:
 
 jobs:
@@ -63,3 +63,9 @@ jobs:
 
       - name: Upload coverage report
         run: echo "Coverage uploaded to Coveralls"
+
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
+          carryforward: "run-1,run-2"
