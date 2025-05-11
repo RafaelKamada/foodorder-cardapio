@@ -20,16 +20,13 @@ jobs:
 
       - name: Install .NET 6.0 (for Coveralls)
         run: |
-          # Adiciona o repositório da Microsoft e instala o SDK do .NET 6
-          wget https://packages.microsoft.com/config/ubuntu/22.04/prod.list
-          sudo mv prod.list /etc/apt/sources.list.d/dotnet-prod.list
-          sudo apt-get update
-          sudo apt-get install -y dotnet-sdk-6.0
+          wget https://download.visualstudio.microsoft.com/download/pr/5d04d580-beb0-48cc-bda7-e8b02133b038/76a4a83b83130e3b6b72d48b3d1ac8fc/dotnet-sdk-6.0.414-linux-x64.tar.gz
+          mkdir -p $HOME/dotnet && tar zxf dotnet-sdk-6.0.414-linux-x64.tar.gz -C $HOME/dotnet
+          export PATH=$PATH:$HOME/dotnet
           dotnet --version
 
       - name: Install dependencies
         run: dotnet restore FoodOrder_Cardapio.sln
-
 
       - name: Build
         run: dotnet build FoodOrder_Cardapio.sln --no-restore
@@ -40,6 +37,11 @@ jobs:
             --no-build \
             --collect:"XPlat Code Coverage" \
             --results-directory ./Tests/Coverage/XML
+
+      # Verificar se os arquivos de cobertura estão sendo gerados corretamente
+      - name: List coverage files
+        run: |
+          ls -la ./Tests/Coverage/
 
       - name: Generate HTML Report
         run: |
@@ -52,10 +54,10 @@ jobs:
       - name: Install and run Coveralls
         run: |
           dotnet tool install --global coveralls.net
-          # Add the global tool path to the system PATH
+          # Adicionar o caminho da ferramenta global ao PATH
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-          # Run the coveralls tool with the necessary parameters
-          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/coverage.cobertura.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
+          # Rodar o Coveralls com o caminho correto para os arquivos XML
+          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/**/*.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Upload coverage report
         run: echo "Coverage uploaded to Coveralls"
