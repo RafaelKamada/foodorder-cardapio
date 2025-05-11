@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/RafaelKamada/foodorder-cardapio/badge.svg?branch=main)](https://coveralls.io/github/RafaelKamada/foodorder-cardapio?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/RafaelKamada/foodorder-cardapio/badge.svg)](https://coveralls.io/github/RafaelKamada/foodorder-cardapio)
 
 # FoodOrderCardapio
 
