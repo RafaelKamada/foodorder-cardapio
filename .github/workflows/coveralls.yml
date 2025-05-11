@@ -19,24 +19,30 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore FoodOrderCardapio.sln
 
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build FoodOrderCardapio.sln --no-restore
 
       - name: Run tests and collect coverage
         run: |
-          dotnet test ./Tests/FoodOrderCardapio.Tests/FoodOrderCardapio.Tests.csproj \
+          dotnet test FoodOrderCardapio.sln \
             --no-build \
             --collect:"XPlat Code Coverage" \
-            -p:CollectCoverage=true \
-            -p:CoverletOutputFormat=opencover \
-            -p:CoverletOutput=./coverage/
+            --results-directory ./Tests/Coverage/XML
+
+      - name: Generate HTML Report
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator \
+            -reports:"./Tests/Coverage/XML/**/*.xml" \
+            -targetdir:"./Tests/Coverage/Report" \
+            -reporttypes:Html
 
       - name: Convert coverage to Coveralls format
         run: |
           dotnet tool install --global coveralls.net
-          coveralls.net --opencover -i ./coverage/coverage.opencover.xml -r ${{ secrets.COVERALLS_REPO_TOKEN }}
+          coveralls.net --opencover -i ./Tests/Coverage/XML/coverage.cobertura.xml -r ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Upload coverage report
         run: echo "Coverage uploaded to Coveralls"
