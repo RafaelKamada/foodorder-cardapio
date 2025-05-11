@@ -1,0 +1,65 @@
+name: Test and Report Coverage
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET 8.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install .NET 6.0 (for Coveralls)
+        run: |
+          # Adiciona o repositório da Microsoft e instala o SDK do .NET 6
+          wget https://packages.microsoft.com/config/ubuntu/22.04/prod.list
+          sudo mv prod.list /etc/apt/sources.list.d/dotnet-prod.list
+          sudo apt-get update
+          sudo apt-get install -y dotnet-sdk-6.0
+          dotnet --version
+
+      - name: Install dependencies
+        run: dotnet restore FoodOrder_Cardapio.sln
+
+      - name: Build
+        run: dotnet build FoodOrder_Cardapio.sln --no-restore
+
+      - name: Run tests and collect coverage
+        run: |
+          dotnet test FoodOrder_Cardapio.sln \
+            --no-build \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./Tests/Coverage/XML
+
+      # Verificar se os arquivos de cobertura estão sendo gerados corretamente
+      - name: List coverage files
+        run: |
+          ls -la ./Tests/Coverage/
+
+      - name: Generate HTML Report
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator \
+            -reports:"./Tests/Coverage/XML/**/*.xml" \
+            -targetdir:"./Tests/Coverage/Report" \
+            -reporttypes:Html
+
+      - name: Install and run Coveralls
+        run: |
+          dotnet tool install --global coveralls.net
+          # Adicionar o caminho da ferramenta global ao PATH
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+          # Rodar o Coveralls com o caminho correto para os arquivos XML
+          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/**/*.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+      - name: Upload coverage report
+        run: echo "Coverage uploaded to Coveralls"
