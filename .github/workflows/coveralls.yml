@@ -73,5 +73,8 @@ jobs:
           # Rodar o Coveralls com o caminho correto para os arquivos XML
           csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/**/*.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
 
-      - name: Upload coverage report
-        run: echo "Coverage uploaded to Coveralls"
+      - name: Upload Coveralls Finished
+        uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
+          carryforward: "run-1,run-2"
