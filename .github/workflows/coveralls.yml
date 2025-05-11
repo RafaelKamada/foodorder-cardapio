@@ -1,0 +1,36 @@
+name: Test and Report Coverage
+
+on:
+  push:
+    branches:
+      - fase_4
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Run tests and collect coverage
+        run: dotnet test --no-build --collect:"XPlat Code Coverage"
+
+      - name: Convert coverage to Coveralls format
+        run: |
+          dotnet tool install --global coveralls.net
+          coveralls.net --opencover -i ./Tests/**/coverage.opencover.xml -r ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+      - name: Upload coverage report
+        run: echo "Coverage uploaded to Coveralls"
