@@ -19,14 +19,14 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Install dependencies
-        run: dotnet restore FoodOrderCardapio.sln
+        run: dotnet restore FoodOrder_Cardapio.sln
 
       - name: Build
-        run: dotnet build FoodOrderCardapio.sln --no-restore
+        run: dotnet build FoodOrder_Cardapio.sln --no-restore
 
       - name: Run tests and collect coverage
         run: |
-          dotnet test FoodOrderCardapio.sln \
+          dotnet test FoodOrder_Cardapio.sln \
             --no-build \
             --collect:"XPlat Code Coverage" \
             --results-directory ./Tests/Coverage/XML
