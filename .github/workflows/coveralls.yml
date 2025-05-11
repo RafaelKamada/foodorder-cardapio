@@ -3,7 +3,7 @@ name: Test and Report Coverage
 on:
   push:
     branches:
-      - fase_4
+      - main
   pull_request:
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Build
         run: dotnet build FoodOrder_Cardapio.sln --no-restore
-        
+
       - name: Run tests and collect coverage
         run: |
           dotnet test FoodOrder_Cardapio.sln \
@@ -49,6 +49,14 @@ jobs:
         run: |
           ls -la ./Tests/Coverage/
 
+      - name: Verifique a existência do arquivo de cobertura
+        run: ls -la ./Tests/Coverage/XML/
+
+      - name: Verifique a estrutura de diretórios
+        run: |
+          echo "Conteúdo do diretório ./Tests/Coverage/XML/"
+          ls -la ./Tests/Coverage/XML/
+
       - name: Generate HTML Report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
@@ -57,29 +65,13 @@ jobs:
             -targetdir:"./Tests/Coverage/Report" \
             -reporttypes:Html
 
-      #- name: Install and run Coveralls
-       # run: |
-        #  dotnet tool install --global coveralls.net
-         # # Adicionar o caminho da ferramenta global ao PATH
-         # echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-          # Rodar o Coveralls com o caminho correto para os arquivos XML
-          #csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/**/*.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
       - name: Install and run Coveralls
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          COVERALLS_PARALLEL: true
         run: |
           dotnet tool install --global coveralls.net
           # Adicionar o caminho da ferramenta global ao PATH
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-          # Enviar dados para o Coveralls
-          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/coverage.cobertura.xml \
-            --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }} \
-            --commitId ${{ github.sha }} \
-            --commitBranch ${{ github.ref_name }}
-            
-      - name: Upload Coveralls Finished
-        uses: coverallsapp/github-action@v2
-        with:
-          parallel-finished: true
-          carryforward: "run-1,run-2"
+          # Rodar o Coveralls com o caminho correto para os arquivos XML
+          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/**/*.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+      - name: Upload coverage report
+        run: echo "Coverage uploaded to Coveralls"
