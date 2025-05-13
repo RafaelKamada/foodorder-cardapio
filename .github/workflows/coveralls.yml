@@ -68,7 +68,7 @@ jobs:
           ls -la ./Tests/Coverage/XML/
           
       - name: Verifique o conteúdo do arquivo de cobertura
-        run: cat ./Tests/Coverage/XML/coverage.cobertura.xml
+        run: cat ./Tests/Coverage/XML/Coverage/coverage.cobertura.xml
 
       - name: Fetch all history for Coveralls
         run: git fetch --unshallow || true
