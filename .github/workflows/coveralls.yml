@@ -41,9 +41,14 @@ jobs:
             --results-directory ./Tests/Coverage/XML \
             -p:CollectCoverage=true \
             -p:CoverletOutputFormat=cobertura \
-            -p:CoverletOutput=./Tests/Coverage/XML/coverage.cobertura.xml
+            -p:CoverletOutput=./Tests/Coverage/XML/coverage.cobertura.xml \
+            -p:SourceLink=$(pwd)
 
-
+      - name: Confirm Repository Structure
+        run: |
+          echo "Diretório do repositório:"
+          ls -la $(pwd)
+          
       # Verificar se os arquivos de cobertura estão sendo gerados corretamente
       - name: List coverage files
         run: |
