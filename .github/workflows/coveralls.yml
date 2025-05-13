@@ -3,7 +3,7 @@ name: Test and Report Coverage
 on:
   push:
     branches:
-      - main
+      - fase_4
   pull_request:
 
 jobs:
@@ -73,8 +73,17 @@ jobs:
           # Rodar o Coveralls com o caminho correto para os arquivos XML
           csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/**/*.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
 
+      #- name: Upload Coveralls Finished
+       # uses: coverallsapp/github-action@v2
+        #with:
+         # parallel-finished: true
+          #jobId: ${{ github.run_id }}
       - name: Upload Coveralls Finished
         uses: coverallsapp/github-action@v2
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          coveralls-endpoint: https://coveralls.io
+          allow-empty: false
+          debug: true # Adiciona debug para mais informações
           parallel-finished: true
-          jobId: ${{ github.run_id }}
+          path-to-lcov: $(find ./Tests/Coverage/XML/ -name "*.xml" | head -n 1)
