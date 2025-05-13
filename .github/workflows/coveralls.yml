@@ -107,7 +107,9 @@ jobs:
             --commitId "${{ github.sha }}" \
             --commitBranch "${{ github.ref_name }}"  \
             --serviceName "github" \
-            --jobId "${{ github.run_id }}"
+            --jobId "${{ github.run_id }}" \
+            --sourceBase $(pwd) \
+            --dryrun
             
      # - name: Upload Coveralls Finished
       #  uses: coverallsapp/github-action@v2
