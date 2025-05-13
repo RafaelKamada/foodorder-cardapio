@@ -60,7 +60,12 @@ jobs:
       - name: Move Copia arquivo de cobertura
         run: |
           cp ./Tests/Coverage/XML/*/coverage.cobertura.xml ./Tests/Coverage/XML/coverage.cobertura.xml
-
+          ls -la ./Tests/Coverage/XML/
+          
+      - name: Set up Git for Coveralls
+        run: |
+          git config --global --add safe.directory $(pwd)
+          git fetch --unshallow || true
 
       - name: Generate HTML Report
         run: |
