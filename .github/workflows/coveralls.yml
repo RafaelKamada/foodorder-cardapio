@@ -62,6 +62,12 @@ jobs:
           cp ./Tests/Coverage/XML/*/coverage.cobertura.xml ./Tests/Coverage/XML/coverage.cobertura.xml
           ls -la ./Tests/Coverage/XML/
           
+      - name: Verifique o conteúdo do arquivo de cobertura
+        run: cat ./Tests/Coverage/XML/coverage.cobertura.xml
+
+      - name: Fetch all history for Coveralls
+        run: git fetch --unshallow || true
+
       - name: Set up Git for Coveralls
         run: |
           git config --global --add safe.directory $(pwd)
@@ -81,7 +87,7 @@ jobs:
           # Adicionar o caminho da ferramenta global ao PATH
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
           # Rodar o Coveralls com o caminho correto para os arquivos XML
-          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/coverage.cobertura.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
+          csmacnz.Coveralls --useRelativePaths --cobertura -i ./Tests/Coverage/XML/coverage.cobertura.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }} --debug
 
       #- name: Upload Coveralls Finished
        # uses: coverallsapp/github-action@v2
@@ -96,4 +102,5 @@ jobs:
           allow-empty: false
           debug: true # Adiciona debug para mais informações
           parallel-finished: true
-          path-to-lcov: $(find ./Tests/Coverage/XML/ -name "*.xml" | head -n 1)
+          path-to-lcov: ./Tests/Coverage/XML/coverage.cobertura.xml
+
