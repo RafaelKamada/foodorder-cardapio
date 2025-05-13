@@ -57,11 +57,16 @@ jobs:
           echo "Conteúdo do diretório ./Tests/Coverage/XML/"
           ls -la ./Tests/Coverage/XML/
 
+      - name: Move Copia arquivo de cobertura
+        run: |
+          cp ./Tests/Coverage/XML/*/coverage.cobertura.xml ./Tests/Coverage/XML/coverage.cobertura.xml
+
+
       - name: Generate HTML Report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator \
-            -reports:"./Tests/Coverage/XML/**/*.xml" \
+            -reports:"./Tests/Coverage/XML/coverage.cobertura.xml" \
             -targetdir:"./Tests/Coverage/Report" \
             -reporttypes:Html
 
@@ -71,7 +76,7 @@ jobs:
           # Adicionar o caminho da ferramenta global ao PATH
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
           # Rodar o Coveralls com o caminho correto para os arquivos XML
-          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/**/*.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
+          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/coverage.cobertura.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       #- name: Upload Coveralls Finished
        # uses: coverallsapp/github-action@v2
