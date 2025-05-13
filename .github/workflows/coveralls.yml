@@ -40,7 +40,7 @@ jobs:
             --collect:"XPlat Code Coverage" \
             --results-directory ./Tests/Coverage/XML \
             -p:CollectCoverage=true \
-            -p:CoverletOutputFormat=cobertura \
+            -p:CoverletOutputFormat=opencover \
             -p:CoverletOutput=./Tests/Coverage/XML/coverage.cobertura.xml \
             -p:SourceLink=$(pwd)
 
