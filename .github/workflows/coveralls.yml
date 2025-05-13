@@ -108,7 +108,7 @@ jobs:
             --commitBranch "${{ github.ref_name }}"  \
             --serviceName "github" \
             --jobId "${{ github.run_id }}" \
-            --sourceBase $(pwd) \
+            --basePath $(pwd) \
             --dryrun
             
      # - name: Upload Coveralls Finished
