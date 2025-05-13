@@ -20,6 +20,7 @@ services:
   api:
     # usar FORA do debug
     image: japamanoel/foodorder_cardapio:latest
+    container_name: foodorder_cardapio
     #inicio---//---- usar no modo debug
     # image: ${DOCKER_REGISTRY-}api
     # build:
@@ -35,3 +36,16 @@ services:
       mongodb:
         condition: service_healthy
         
+  tests:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    container_name: foodorder_cardapio_tests
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      - MONGODB_CONNECTION=mongodb://mongodb:27017/FoodOrder_Cardapio
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    entrypoint: ["dotnet", "test", "Tests/Tests.csproj"]

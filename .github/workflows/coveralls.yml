@@ -38,12 +38,24 @@ jobs:
           dotnet test FoodOrder_Cardapio.sln \
             --no-build \
             --collect:"XPlat Code Coverage" \
-            --results-directory ./Tests/Coverage/XML
+            --results-directory ./Tests/Coverage/XML \
+            -p:CollectCoverage=true \
+            -p:CoverletOutputFormat=cobertura \
+            -p:CoverletOutput=./Tests/Coverage/XML/coverage.cobertura.xml
+
 
       # Verificar se os arquivos de cobertura estão sendo gerados corretamente
       - name: List coverage files
         run: |
           ls -la ./Tests/Coverage/
+
+      - name: Verifique a existência do arquivo de cobertura
+        run: ls -la ./Tests/Coverage/XML/
+
+      - name: Verifique a estrutura de diretórios
+        run: |
+          echo "Conteúdo do diretório ./Tests/Coverage/XML/"
+          ls -la ./Tests/Coverage/XML/
 
       - name: Generate HTML Report
         run: |
@@ -61,5 +73,8 @@ jobs:
           # Rodar o Coveralls com o caminho correto para os arquivos XML
           csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/**/*.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
 
-      - name: Upload coverage report
-        run: echo "Coverage uploaded to Coveralls"
+      - name: Upload Coveralls Finished
+        uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
+          jobId: ${{ github.run_id }}
