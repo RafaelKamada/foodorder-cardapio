@@ -3,18 +3,25 @@ name: Test and Report Coverage
 on:
   push:
     branches:
-      - fase_4
+      - main
   pull_request:
 
-env:
-  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-  
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      # Mover os arquivos para a pasta docs para GitHub Pages
+      - name: Prepare GitHub Pages
+        if: always()
+        run: |
+          # Cria a pasta docs e move os arquivos do relatório
+          mkdir -p docs
+          cp -R ./Tests/Coverage/Report/* ./docs/
+          echo "Arquivos movidos para a pasta docs:"
+          ls -la ./docs/
 
       - name: Setup .NET 8.0
         uses: actions/setup-dotnet@v3
@@ -43,15 +50,10 @@ jobs:
             --collect:"XPlat Code Coverage" \
             --results-directory ./Tests/Coverage/XML \
             -p:CollectCoverage=true \
-            -p:CoverletOutputFormat=opencover \
-            -p:CoverletOutput=./Tests/Coverage/XML/coverage.cobertura.xml \
-            -p:SourceLink=$(pwd)
+            -p:CoverletOutputFormat=cobertura \
+            -p:CoverletOutput=./Tests/Coverage/XML/coverage.cobertura.xml
 
-      - name: Confirm Repository Structure
-        run: |
-          echo "Diretório do repositório:"
-          ls -la $(pwd)
-          
+
       # Verificar se os arquivos de cobertura estão sendo gerados corretamente
       - name: List coverage files
         run: |
@@ -65,71 +67,24 @@ jobs:
           echo "Conteúdo do diretório ./Tests/Coverage/XML/"
           ls -la ./Tests/Coverage/XML/
 
-      - name: Move Copia arquivo de cobertura
-        run: |
-          mkdir -p ./Tests/Coverage/XML/Coverage && cp ./Tests/Coverage/XML/*/coverage.cobertura.xml ./Tests/Coverage/XML/Coverage/coverage.cobertura.xml
-          ls -la ./Tests/Coverage/XML/
-          
-      - name: Verifique o conteúdo do arquivo de cobertura
-        run: cat ./Tests/Coverage/XML/Coverage/coverage.cobertura.xml
-
-      - name: Fetch all history for Coveralls
-        run: git fetch --unshallow || true
-
-      - name: Set up Git for Coveralls
-        run: |
-          git config --global --add safe.directory $(pwd)
-          git fetch --unshallow || true
-
       - name: Generate HTML Report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator \
-            -reports:"./Tests/Coverage/XML/coverage.cobertura.xml" \
+            -reports:"./Tests/Coverage/XML/**/*.xml" \
             -targetdir:"./Tests/Coverage/Report" \
             -reporttypes:Html
 
-    #  - name: Install and run Coveralls
-    #    run: |
-    #      # Instala o Coveralls
-    #      dotnet tool install --global coveralls.net
-    #      
-    #      # Adiciona a ferramenta ao PATH
-    #      echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-    #      export PATH="$HOME/.dotnet/tools:$PATH"
-    #      
-    #      # Verifica se o arquivo de cobertura está presente
-    #      ls -la ./Tests/Coverage/XML/
-    #      
-    #      # Executa o Coveralls
-    #      csmacnz.Coveralls \
-    #        --useRelativePaths \
-    #        --opencover \
-    #        -i ./Tests/Coverage/XML/coverage.cobertura.xml \
-    #        --repoToken "${{ secrets.COVERALLS_REPO_TOKEN }}" \
-    #        --commitId "${{ github.sha }}" \
-    #        --commitBranch "${{ github.ref_name }}"  \
-    #        --serviceName "github" \
-    #        --jobId "${{ github.run_id }}" \
-    #        --basePath $(pwd) 
-            
-      - name: Install Coveralls
+      - name: Install and run Coveralls
         run: |
           dotnet tool install --global coveralls.net
+          # Adicionar o caminho da ferramenta global ao PATH
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-          export PATH="$HOME/.dotnet/tools:$PATH"
+          # Rodar o Coveralls com o caminho correto para os arquivos XML
+          csmacnz.Coveralls --opencover -i ./Tests/Coverage/XML/**/*.xml --repoToken ${{ secrets.COVERALLS_REPO_TOKEN }}
 
-      - name: Upload to Coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          csmacnz.Coveralls \
-            --useRelativePaths \
-            --opencover \
-            -i ./Tests/Coverage/XML/coverage.cobertura.xml \
-            --commitId ${{ github.sha }} \
-            --commitBranch ${{ github.ref_name }} \
-            --serviceName github \
-            --jobId ${{ github.run_id }} \
-            --basePath $(pwd)
-
+      - name: Upload Coveralls Finished
+        uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
+          jobId: ${{ github.run_id }}
