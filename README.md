@@ -6,9 +6,8 @@ Microserviço responsável pelo módulo de cardápios da arquitetura de microser
 
 Acesse o relatório de cobertura gerado [Cobertura](https://rafaelkamada.github.io/foodorder-cardapio/).
 
-![Relatório de Cobertura](https://github.com/RafaelKamada/foodorder-cardapio/blob/fase_4_b/docs/print_cobertura.png)
-
-
+![Relatório de Cobertura](https://raw.githubusercontent.com/RafaelKamada/foodorder-cardapio/fase_4_b/docs/print_cobertura.png)
+ 
 ## Uso
 
 ### Rodando localmente
