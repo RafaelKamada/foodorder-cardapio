@@ -1,10 +1,11 @@
 name: Deploy GitHub Pages
 
 on:
-  workflow_run:
-    workflows: ["Test and Report Coverage"]  # Nome do workflow de testes e cobertura
-    types:
-      - completed
+  push:
+    branches:
+      - fase_4
+    paths:
+      - 'Tests/Coverage/Report/**'  # Só acionar quando houver mudanças nos arquivos de cobertura
 
 jobs:
   deploy:
@@ -13,9 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy to GitHub Pages
+      - name: Configurar Git
         run: |
-          git remote set-url origin https://github.com/${{ github.repository }}.git
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit changes to GitHub Pages
+        run: |
           git add docs/
-          git commit -m "Deploy updated coverage report"
+          git commit -m "Update GitHub Pages"
           git push
