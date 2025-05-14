@@ -20,6 +20,8 @@ jobs:
           # Cria a pasta docs e move os arquivos do relatório
           mkdir -p docs
           cp -R ./Tests/Coverage/Report/* ./docs/
+          # Desativa o Jekyll para evitar conflitos com HTML puro
+          touch ./docs/.nojekyll
           echo "Arquivos movidos para a pasta docs:"
           ls -la ./docs/
 
