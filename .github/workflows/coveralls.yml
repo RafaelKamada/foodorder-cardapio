@@ -19,10 +19,9 @@ jobs:
         run: |
           # Cria a pasta coverage e move os arquivos do relatório
           mkdir -p coverage
-          cp -R ./Tests/Coverage/Report/* ./coverage/
-          touch ./coverage/.nojekyll
+          cp -R ./Tests/Coverage/Report/* ./docs/
           echo "Arquivos movidos para a pasta coverage:"
-          ls -la ./coverage/
+          ls -la ./docs/
 
 
       - name: Setup .NET 8.0
