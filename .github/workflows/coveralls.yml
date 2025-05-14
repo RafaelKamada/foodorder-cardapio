@@ -13,23 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Criar a pasta docs e mover os arquivos para ela
-      - name: Prepare GitHub Pages
-        run: |
-          # Criar a pasta docs
-          mkdir -p docs
-          
-          # Criar a pasta coverage (se necessário)
-          mkdir -p coverage
-
-          # Copiar todos os arquivos de Coverage/Report para docs/
-          cp -R ./Tests/Coverage/Report/* ./docs/
-          
-          # Verificar se os arquivos foram movidos corretamente
-          echo "Arquivos movidos para a pasta docs:"
-          ls -la ./docs/
-
-
       - name: Setup .NET 8.0
         uses: actions/setup-dotnet@v3
         with:
