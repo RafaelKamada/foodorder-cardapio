@@ -1,9 +1,13 @@
-[![Coverage Status](https://coveralls.io/repos/github/RafaelKamada/foodorder-cardapio/badge.svg)](https://coveralls.io/github/RafaelKamada/foodorder-cardapio)
-
 # FoodOrderCardapio
 
 Microserviço responsável pelo módulo de cardápios da arquitetura de microserviços do sistema FoodOrder, desenvolvido em .NET e MongoDB.
 
+## Cobertura de Testes
+
+Acesse o relatório de cobertura gerado [Cobertura](https://rafaelkamada.github.io/foodorder-cardapio/).
+
+![Relatório de Cobertura](https://raw.githubusercontent.com/RafaelKamada/foodorder-cardapio/fase_4_b/docs/print_cobertura.png)
+ 
 ## Uso
 
 ### Rodando localmente
