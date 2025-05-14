@@ -3,7 +3,7 @@ name: Test and Report Coverage
 on:
   push:
     branches:
-      - main
+      - fase_4
   pull_request:
 
 jobs:
@@ -12,6 +12,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      # Mover os arquivos para a pasta docs para GitHub Pages
+      - name: Prepare GitHub Pages
+        if: always()
+        run: |
+          # Cria a pasta coverage e move os arquivos do relatório
+          mkdir -p coverage
+          cp -R ./Tests/Coverage/Report/* ./docs/
+          echo "Arquivos movidos para a pasta coverage:"
+          ls -la ./docs/
+
 
       - name: Setup .NET 8.0
         uses: actions/setup-dotnet@v3
