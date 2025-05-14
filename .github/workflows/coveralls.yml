@@ -126,7 +126,7 @@ jobs:
           csmacnz.Coveralls \
             --useRelativePaths \
             --opencover \
-            -i ./Tests/Coverage/coverage.cobertura.xml \
+            -i ./Tests/Coverage/XML/coverage.cobertura.xml \
             --commitId ${{ github.sha }} \
             --commitBranch ${{ github.ref_name }} \
             --serviceName github \
