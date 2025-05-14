@@ -17,13 +17,13 @@ jobs:
       - name: Prepare GitHub Pages
         if: always()
         run: |
-          # Cria a pasta docs e move os arquivos do relatório
-          mkdir -p docs
-          cp -R ./Tests/Coverage/Report/* ./docs/
-          # Desativa o Jekyll para evitar conflitos com HTML puro
-          touch ./docs/.nojekyll
-          echo "Arquivos movidos para a pasta docs:"
-          ls -la ./docs/
+          # Cria a pasta coverage e move os arquivos do relatório
+          mkdir -p coverage
+          cp -R ./Tests/Coverage/Report/* ./coverage/
+          touch ./coverage/.nojekyll
+          echo "Arquivos movidos para a pasta coverage:"
+          ls -la ./coverage/
+
 
       - name: Setup .NET 8.0
         uses: actions/setup-dotnet@v3
