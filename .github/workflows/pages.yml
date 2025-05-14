@@ -1,0 +1,26 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - fase_4
+    paths:
+      - 'Tests/Coverage/Report/**'  # Só acionar quando houver mudanças nos arquivos de cobertura
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configurar Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit changes to GitHub Pages
+        run: |
+          git add docs/
+          git commit -m "Update GitHub Pages"
+          git push
