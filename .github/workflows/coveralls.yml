@@ -13,14 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Mover os arquivos para a pasta docs para GitHub Pages
+      # Criar a pasta docs e mover os arquivos para ela
       - name: Prepare GitHub Pages
-        if: always()
         run: |
-          # Cria a pasta coverage e move os arquivos do relatório
+          # Criar a pasta docs
+          mkdir -p docs
+          
+          # Criar a pasta coverage (se necessário)
           mkdir -p coverage
+
+          # Copiar todos os arquivos de Coverage/Report para docs/
           cp -R ./Tests/Coverage/Report/* ./docs/
-          echo "Arquivos movidos para a pasta coverage:"
+          
+          # Verificar se os arquivos foram movidos corretamente
+          echo "Arquivos movidos para a pasta docs:"
           ls -la ./docs/
 
 
