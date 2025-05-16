@@ -6,26 +6,56 @@
 Este repositório constrói um serviço que faz parte de uma arquitetura de microsserviços.</p>
 
 ## 📊 Code Coverage
-#######################################################################################################################
-#######################################################################################################################
-#######################################################################################################################
+Acesse o relatório de cobertura gerado [Cobertura](https://rafaelkamada.github.io/foodorder-cardapio/).
+
+![Relatório de Cobertura](https://raw.githubusercontent.com/RafaelKamada/foodorder-cardapio/fase_4_b/docs/print_cobertura.png)
+ 
+
 ## 🏗️ Arquitetura de Microsserviços
 ![Arquitetura](arquitetura.png?raw=true "Arquitetura")
 
 ### :computer: Tecnologias Utilizadas
-- Linguagem escolhida: #####
-- Banco de Dados: #####
-- Mensageria: #####
+- Linguagem escolhida: .NET
+- Banco de Dados: MongoDB
 
 ### :hammer: Detalhes desse serviço
-#######################################################################################################################
-#######################################################################################################################
-#######################################################################################################################
+Microserviço responsável pelo módulo de cardápios da arquitetura de microserviços do sistema FoodOrder, desenvolvido em .NET e MongoDB.
+
 
 ### :hammer_and_wrench: Execução do projeto
-#######################################################################################################################
-#######################################################################################################################
-#######################################################################################################################
+Para rodar o serviço localmente, você precisa ter Docker e .NET 8 instalados.
+
+Para construir e rodar o serviço, utilize o comando:
+
+```bash
+docker-compose up --build -d
+```
+
+Esse comando irá:
+
+* Criar a rede Docker para comunicação entre os serviços.
+* Subir o banco de dados MongoDB.
+* Iniciar o serviço `foodorder-cardapio`.
+
+Para parar e remover os containers, use:
+
+```bash
+docker-compose down
+```
+
+### Endpoints Disponíveis
+
+| Método | Endpoint                                | Descrição                                     |
+| ------ | --------------------------------------- | --------------------------------------------- |
+| GET    | /Produtos/ObterTodos                    | Retorna todos os produtos.                    |
+| GET    | /Produtos/{id}                          | Retorna um produto específico pelo seu ID.    |
+| PUT    | /Produtos/{id}                          | Atualiza um produto existente pelo seu ID.    |
+| DELETE | /Produtos/{id}                          | Remove um produto pelo seu ID.                |
+| GET    | /Produtos/ObterPorIds                   | Retorna produtos pelos seus IDs.              |
+| GET    | /Produtos/ObterCategorias               | Retorna todas as categorias disponíveis.      |
+| GET    | /Produtos/ObterPorCategoria/{categoria} | Retorna produtos de uma categoria específica. |
+| POST   | /Produtos                               | Cria um novo produto.                         |
+
 
 ### 🗄️ Outros repos do microserviço dessa arquitetura
 - [Food Order Produção](https://github.com/diegogl12/food-order-producao)
