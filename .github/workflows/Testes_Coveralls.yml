@@ -47,7 +47,7 @@ jobs:
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator \
-            -reports:"./Tests/Coverage/XML/coverage.cobertura.xml" \
+            -reports:"./Tests/Coverage/XML/*/coverage.cobertura.xml" \
             -targetdir:"./Tests/Coverage/Report" \
             -reporttypes:Html
 
@@ -55,5 +55,5 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./Tests/Coverage/XML/coverage.cobertura.xml
+          path-to-lcov: ./Tests/Coverage/XML/*/coverage.cobertura.xml
           verbose: true
