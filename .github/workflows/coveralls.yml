@@ -38,7 +38,7 @@ jobs:
             --no-build \
             -p:CollectCoverage=true \
             -p:CoverletOutputFormat=opencover \
-            -p:CoverletOutput=./Tests/Coverage/coverage.xml \
+            -p:CoverletOutput=./Tests/Coverage/ \
             -p:Exclude="[xunit.*]*"
 
       - name: Confirm Repository Structure
@@ -47,7 +47,7 @@ jobs:
           ls -la $(pwd)
           
       - name: List coverage files
-        run: ls -la ./Tests/Coverage/
+        run: ls -lR ./Tests/Coverage/
 
       - name: Verify coverage file content
         run: cat ./Tests/Coverage/coverage.xml
