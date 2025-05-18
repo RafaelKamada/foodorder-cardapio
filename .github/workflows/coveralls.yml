@@ -32,13 +32,13 @@ jobs:
       - name: Build
         run: dotnet build FoodOrder_Cardapio.sln --no-restore
 
-      - name: Run tests and collect coverage
+      - name: Run tests and collect coverage in OpenCover format
         run: |
           dotnet test FoodOrder_Cardapio.sln \
             --no-build \
-            --collect:"XPlat Code Coverage" \
-            --results-directory ./Tests/Coverage/XML
-
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=opencover \
+            /p:CoverletOutput=./Tests/Coverage/coverage.opencover.xml
 
       - name: Move coverage to fixed directory
         run: |
@@ -103,10 +103,9 @@ jobs:
           ls -la ./Tests/Coverage/XML/
           csmacnz.Coveralls \
             --opencover \
-            -i ./Tests/Coverage/XML/coverage.cobertura.xml \
+            -i ./Tests/Coverage/coverage.cobertura.xml \
             --repoToken "${{ secrets.COVERALLS_REPO_TOKEN }}" \
             --commitId "${{ github.sha }}" \
             --commitBranch "${{ github.ref_name }}"  \
             --serviceName "github" \
-            --jobId "${{ github.run_id }}" \
-            --basePath .
+            --jobId "${{ github.run_id }}" 
