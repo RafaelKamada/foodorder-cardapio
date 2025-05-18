@@ -88,6 +88,17 @@ jobs:
 
       - name: Check Current Directory
         run: pwd
+      
+      - name: Check Repository Directory Structure
+        run: |
+          echo "Verificando estrutura do repositório..."
+          echo "Diretório atual:"
+          pwd
+          echo "Arquivos no diretório base:"
+          ls -la $(pwd)
+          echo "Estrutura dos arquivos de código:"
+          find $(pwd)/Application
+          find $(pwd)/Domain
 
       - name: Install and run Coveralls
         run: |
@@ -103,7 +114,7 @@ jobs:
           
           # Executa o Coveralls
           csmacnz.Coveralls \
-            --useRelativePaths \
+            # --useRelativePaths \
             --opencover \
             -i ./Tests/Coverage/XML/Coverage/coverage.cobertura.xml \
             --repoToken "${{ secrets.COVERALLS_REPO_TOKEN }}" \
