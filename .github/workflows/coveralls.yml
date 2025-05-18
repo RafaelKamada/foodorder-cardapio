@@ -40,6 +40,12 @@ jobs:
             /p:CoverletOutputFormat=opencover \
             /p:CoverletOutput=./Tests/Coverage/coverage.opencover.xml
 
+      - name: List coverage files
+        run: ls -lR ./Tests/Coverage/
+
+      - name: find coverage files
+        run: find ./Tests/Coverage -type f
+        
       - name: Move coverage to fixed directory
         run: |
           mkdir -p ./Tests/Coverage/XML
@@ -50,12 +56,6 @@ jobs:
           echo "Diretório do repositório:"
           ls -la $(pwd)
           
-      - name: List coverage files
-        run: ls -lR ./Tests/Coverage/
-
-      - name: find coverage files
-        run: find ./Tests/Coverage -type f
-        
       - name: Verify coverage file content
         run: cat ./Tests/Coverage/XML/coverage.cobertura.xml
 
@@ -108,4 +108,5 @@ jobs:
             --commitId "${{ github.sha }}" \
             --commitBranch "${{ github.ref_name }}"  \
             --serviceName "github" \
-            --jobId "${{ github.run_id }}" 
+            --jobId "${{ github.run_id }}" \
+            --verbose
