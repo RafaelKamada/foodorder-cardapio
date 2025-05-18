@@ -49,6 +49,9 @@ jobs:
       - name: List coverage files
         run: ls -lR ./Tests/Coverage/
 
+      - name: find coverage files
+        run: find ./Tests/Coverage -type f
+        
       - name: Verify coverage file content
         run: cat ./Tests/Coverage/coverage.xml
 
