@@ -1,11 +1,15 @@
-name: Test and Report Coverage 2
+name: Test and Report Coverage - Coverall.io
 
 on:
   push:
     branches:
+      - main
       - fase_4_b
   pull_request:
-
+    branches:
+      - main
+      - fase_4_b
+      
 jobs:
   test:
     runs-on: ubuntu-latest
