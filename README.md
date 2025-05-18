@@ -6,6 +6,8 @@
 Este repositório constrói um serviço que faz parte de uma arquitetura de microsserviços.</p>
 
 ## 📊 Code Coverage
+[![Coverage Status](https://coveralls.io/repos/github/RafaelKamada/foodorder-cardapio/badge.svg?branch=fase_4)](https://coveralls.io/github/RafaelKamada/foodorder-cardapio?branch=fase_4)
+
 Acesse o relatório de cobertura gerado [Cobertura](https://rafaelkamada.github.io/foodorder-cardapio/).
 
 ![Relatório de Cobertura](https://raw.githubusercontent.com/RafaelKamada/foodorder-cardapio/fase_4_b/docs/print_cobertura.png)
