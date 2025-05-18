@@ -89,6 +89,10 @@ jobs:
           find $(pwd)/Application
           find $(pwd)/Domain
 
+      - name: Remove <sources> from coverage report
+        run: sed -i '/<sources>/,/<\/sources>/d' ./Tests/Coverage/XML/coverage.cobertura.xml
+
+
       - name: Install and run Coveralls
         run: |
           dotnet tool install --global coveralls.net
@@ -103,4 +107,4 @@ jobs:
             --commitBranch "${{ github.ref_name }}"  \
             --serviceName "github" \
             --jobId "${{ github.run_id }}" \
-            --basePath $(pwd)
+            --basePath .
