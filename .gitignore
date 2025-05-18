@@ -46,3 +46,4 @@ ehthumbs.db
 
 # Windows shortcuts
 *.lnk
+Tests/Coverage/XML/coverage.cobertura.xml
