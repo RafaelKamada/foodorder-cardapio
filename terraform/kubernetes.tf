@@ -1,8 +1,8 @@
-resource "kubernetes_deployment" "api" {
+resource "kubernetes_deployment" "api_cardapio" {
   metadata {
-    name = "api-deployment"
+    name = "api-cardapio-deployment"
     labels = {
-      app = "api-pod"
+      app = "api-cardapio"
     }
   }
 
@@ -11,20 +11,20 @@ resource "kubernetes_deployment" "api" {
 
     selector {
       match_labels = {
-        app = "api-pod"
+        app = "api-cardapio"
       }
     }
 
     template {
       metadata {
         labels = {
-          app = "api-pod"
+          app = "api-cardapio"
         }
       }
 
       spec {
         container {
-          name  = "api-pod-config"
+          name  = "api-cardapio-container"
           image = "japamanoel/foodorder_cardapio:latest"
 
           port {
@@ -46,17 +46,17 @@ resource "kubernetes_deployment" "api" {
   }
 }
 
-resource "kubernetes_service" "api" {
+resource "kubernetes_service" "api_cardapio" {
   metadata {
-    name = "api-svc"
+    name = "api-cardapio-svc"
     labels = {
-      app = "api-svc"
+      app = "api-cardapio"
     }
   }
 
   spec {
     selector = {
-      app = "api-pod"
+      app = "api-cardapio"
     }
 
     port {
@@ -69,6 +69,6 @@ resource "kubernetes_service" "api" {
   }
 
   depends_on = [
-    kubernetes_deployment.api
+    kubernetes_deployment.api_cardapio
   ]
 }
