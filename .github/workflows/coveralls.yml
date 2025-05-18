@@ -91,7 +91,7 @@ jobs:
 
       - name: Install and run Coveralls
         run: |
-          # Instala o Coveralls
+          # Instala o Coveralls 
           dotnet tool install --global coveralls.net
           
           # Adiciona a ferramenta ao PATH
