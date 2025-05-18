@@ -1,0 +1,63 @@
+name: Test and Report Coverage - Coverall.io
+
+on:
+  push:
+    branches:
+      - main
+      - fase_4_b
+  pull_request:
+    branches:
+      - main
+      - fase_4_b
+      
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET 8.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install .NET 6.0 (for Coveralls)
+        run: |
+          wget https://packages.microsoft.com/config/ubuntu/22.04/prod.list
+          sudo mv prod.list /etc/apt/sources.list.d/dotnet-prod.list
+          sudo apt-get update
+          sudo apt-get install -y dotnet-sdk-6.0
+          dotnet --version
+
+      - name: Install dependencies
+        run: dotnet restore FoodOrder_Cardapio.sln
+
+      - name: Build
+        run: dotnet build FoodOrder_Cardapio.sln --no-restore
+
+      - name: Run tests and collect coverage
+        run: |
+          dotnet test FoodOrder_Cardapio.sln \
+            --no-build \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./Tests/Coverage/XML \
+            -p:CollectCoverage=true \
+            -p:CoverletOutputFormat=cobertura \
+            -p:CoverletOutput=./Tests/Coverage/XML/coverage.cobertura.xml \
+            -p:Exclude="[xunit.*]*" # Exemplo para excluir assemblies de teste
+
+      - name: Generate HTML Report
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator \
+            -reports:"./Tests/Coverage/XML/*/coverage.cobertura.xml" \
+            -targetdir:"./Tests/Coverage/Report" \
+            -reporttypes:Html
+
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./Tests/Coverage/XML/*/coverage.cobertura.xml
+          verbose: true
