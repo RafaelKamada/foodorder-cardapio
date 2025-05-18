@@ -32,25 +32,32 @@ jobs:
       - name: Build
         run: dotnet build FoodOrder_Cardapio.sln --no-restore
 
-      - name: Run tests and collect coverage
+      - name: Run tests and collect coverage in OpenCover format
         run: |
           dotnet test FoodOrder_Cardapio.sln \
             --no-build \
-            -p:CollectCoverage=true \
-            -p:CoverletOutputFormat=opencover \
-            -p:CoverletOutput=./Tests/Coverage/ \
-            -p:Exclude="[xunit.*]*"
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=opencover \
+            /p:CoverletOutput=./Tests/Coverage/coverage.opencover.xml
+
+      - name: List coverage files
+        run: ls -lR ./Tests/Coverage/
+
+      - name: find coverage files
+        run: find ./Tests/Coverage -type f
+        
+      - name: Move coverage to fixed directory
+        run: |
+          mkdir -p ./Tests/Coverage/XML
+          mv ./Tests/Coverage/XML/**/coverage.cobertura.xml ./Tests/Coverage/XML/coverage.cobertura.xml
 
       - name: Confirm Repository Structure
         run: |
           echo "Diretório do repositório:"
           ls -la $(pwd)
           
-      - name: List coverage files
-        run: ls -lR ./Tests/Coverage/
-
       - name: Verify coverage file content
-        run: cat ./Tests/Coverage/coverage.xml
+        run: cat ./Tests/Coverage/XML/coverage.cobertura.xml
 
       - name: Fetch all history for Coveralls
         run: git fetch --unshallow || true
@@ -64,7 +71,7 @@ jobs:
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator \
-            -reports:"./Tests/Coverage/coverage.xml" \
+            -reports:"./Tests/Coverage/XML/coverage.cobertura.xml" \
             -targetdir:"./Tests/Coverage/Report" \
             -reporttypes:Html
 
@@ -82,18 +89,24 @@ jobs:
           find $(pwd)/Application
           find $(pwd)/Domain
 
+      - name: Remove <sources> from coverage report
+        run: sed -i '/<sources>/,/<\/sources>/d' ./Tests/Coverage/XML/coverage.cobertura.xml
+
+      - name: Verify coverage file content 2
+        run: cat ./Tests/Coverage/XML/coverage.cobertura.xml
+
       - name: Install and run Coveralls
         run: |
           dotnet tool install --global coveralls.net
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
           export PATH="$HOME/.dotnet/tools:$PATH"
-          ls -la ./Tests/Coverage/
+          ls -la ./Tests/Coverage/XML/
           csmacnz.Coveralls \
             --opencover \
-            -i ./Tests/Coverage/coverage.xml \
+            -i ./Tests/Coverage/coverage.cobertura.xml \
             --repoToken "${{ secrets.COVERALLS_REPO_TOKEN }}" \
             --commitId "${{ github.sha }}" \
             --commitBranch "${{ github.ref_name }}"  \
             --serviceName "github" \
             --jobId "${{ github.run_id }}" \
-            --basePath $(pwd)
+            --verbose
