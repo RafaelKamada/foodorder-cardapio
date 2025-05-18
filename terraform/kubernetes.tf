@@ -62,7 +62,7 @@ resource "kubernetes_service" "api_cardapio" {
     port {
       port        = 80
       target_port = 9000
-      node_port   = 30080
+      node_port   = 30081
     }
 
     type = "LoadBalancer"
