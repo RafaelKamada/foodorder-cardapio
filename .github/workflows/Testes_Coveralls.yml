@@ -1,4 +1,4 @@
-name: Test and Report Coverage
+name: Test and Report Coverage 2
 
 on:
   push:
