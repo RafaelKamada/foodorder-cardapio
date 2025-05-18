@@ -20,7 +20,6 @@ jobs:
 
       - name: Install .NET 6.0 (for Coveralls)
         run: |
-          # Adiciona o repositório da Microsoft e instala o SDK do .NET 6
           wget https://packages.microsoft.com/config/ubuntu/22.04/prod.list
           sudo mv prod.list /etc/apt/sources.list.d/dotnet-prod.list
           sudo apt-get update
@@ -37,38 +36,21 @@ jobs:
         run: |
           dotnet test FoodOrder_Cardapio.sln \
             --no-build \
-            --collect:"XPlat Code Coverage" \
-            --results-directory ./Tests/Coverage/XML \
             -p:CollectCoverage=true \
             -p:CoverletOutputFormat=opencover \
-            -p:CoverletOutput=./Tests/Coverage/XML/coverage.cobertura.xml \
-            -p:SourceLink=$(pwd)
+            -p:CoverletOutput=./Tests/Coverage/coverage.xml \
+            -p:Exclude="[xunit.*]*"
 
       - name: Confirm Repository Structure
         run: |
           echo "Diretório do repositório:"
           ls -la $(pwd)
           
-      # Verificar se os arquivos de cobertura estão sendo gerados corretamente
       - name: List coverage files
-        run: |
-          ls -la ./Tests/Coverage/
+        run: ls -la ./Tests/Coverage/
 
-      - name: Verifique a existência do arquivo de cobertura
-        run: ls -la ./Tests/Coverage/XML/
-
-      - name: Verifique a estrutura de diretórios
-        run: |
-          echo "Conteúdo do diretório ./Tests/Coverage/XML/"
-          ls -la ./Tests/Coverage/XML/
-
-      - name: Move Copia arquivo de cobertura
-        run: |
-          mkdir -p ./Tests/Coverage/XML/Coverage && cp ./Tests/Coverage/XML/*/coverage.cobertura.xml ./Tests/Coverage/XML/Coverage/coverage.cobertura.xml
-          ls -la ./Tests/Coverage/XML/
-          
-      - name: Verifique o conteúdo do arquivo de cobertura
-        run: cat ./Tests/Coverage/XML/Coverage/coverage.cobertura.xml
+      - name: Verify coverage file content
+        run: cat ./Tests/Coverage/coverage.xml
 
       - name: Fetch all history for Coveralls
         run: git fetch --unshallow || true
@@ -82,7 +64,7 @@ jobs:
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
           reportgenerator \
-            -reports:"./Tests/Coverage/XML/Coverage/coverage.cobertura.xml" \
+            -reports:"./Tests/Coverage/coverage.xml" \
             -targetdir:"./Tests/Coverage/Report" \
             -reporttypes:Html
 
@@ -102,24 +84,16 @@ jobs:
 
       - name: Install and run Coveralls
         run: |
-          # Instala o Coveralls 
           dotnet tool install --global coveralls.net
-          
-          # Adiciona a ferramenta ao PATH
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
           export PATH="$HOME/.dotnet/tools:$PATH"
-          
-          # Verifica se o arquivo de cobertura está presente
-          ls -la ./Tests/Coverage/XML/
-          
-          # Executa o Coveralls
+          ls -la ./Tests/Coverage/
           csmacnz.Coveralls \
-            # --useRelativePaths \
             --opencover \
-            -i ./Tests/Coverage/XML/Coverage/coverage.cobertura.xml \
+            -i ./Tests/Coverage/coverage.xml \
             --repoToken "${{ secrets.COVERALLS_REPO_TOKEN }}" \
             --commitId "${{ github.sha }}" \
             --commitBranch "${{ github.ref_name }}"  \
             --serviceName "github" \
             --jobId "${{ github.run_id }}" \
-            --basePath $(pwd) 
+            --basePath $(pwd)
