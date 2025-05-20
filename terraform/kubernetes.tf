@@ -14,7 +14,7 @@ resource "kubernetes_deployment" "api_cardapio" {
         app = "api-cardapio"
       }
     }
-
+ 
     template {
       metadata {
         labels = {
@@ -28,12 +28,12 @@ resource "kubernetes_deployment" "api_cardapio" {
           image = "japamanoel/foodorder_cardapio:latest"
 
           port {
-            container_port = 9000
+            container_port = 9001
           }
 
           env {
             name  = "ASPNETCORE_URLS"
-            value = "http://0.0.0.0:9000"
+            value = "http://0.0.0.0:9001"
           }
 
           env {
@@ -61,7 +61,7 @@ resource "kubernetes_service" "api_cardapio" {
 
     port {
       port        = 80
-      target_port = 9000
+      target_port = 9001
       node_port   = 30081
     }
 
