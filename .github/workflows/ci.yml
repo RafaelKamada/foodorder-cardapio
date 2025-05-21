@@ -28,7 +28,7 @@ jobs:
         run: dotnet build  FoodOrder_Cardapio.sln --no-restore --configuration Release
 
       - name: 🧪 Rodar testes com cobertura
-        run: dotnet test  FoodOrder_Cardapio.sln --no-build --configuration Release --collect:"XPlat Code Coverage" --verbosity normal
+        run: dotnet test FoodOrder_Cardapio.sln --no-build --collect:"XPlat Code Coverage" --verbosity normal
 
       - name: 🔍 Listar arquivos gerados
         run: |
